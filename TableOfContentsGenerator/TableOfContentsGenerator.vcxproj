@@ -147,7 +147,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="LocationInText.cpp" />
+    <ClCompile Include="PairOfTags.cpp" />
+    <ClCompile Include="TableOfContents.cpp" />
     <ClCompile Include="TableOfContentsGenerator.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="LocationInText.h" />
+    <ClInclude Include="PairOfTags.h" />
+    <ClInclude Include="TableOfContents.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
