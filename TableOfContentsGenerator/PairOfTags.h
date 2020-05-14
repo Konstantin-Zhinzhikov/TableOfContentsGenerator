@@ -12,7 +12,8 @@ public:
     std::string name;                   // Название тега
     std::string content;                // Содержимое тега
 
-    PairOfTags();
+    PairOfTags(std::string name = "", LocationInText openingTagLocation = LocationInText(),
+        LocationInText closingTagLocation = LocationInText());
 
     bool findPairOfTags(const std::vector <std::string>& code);
     void findTagsLocationsInString(const std::string& str, int pos = 0);
