@@ -31,9 +31,24 @@ namespace TestPairOfTags
 	{
 	public:
 		
-		TEST_METHOD(aaaa)
+		TEST_METHOD(OneHeaderInOneString)
 		{
+			// Входные данные
+			string tagName = "h1";
 
+			vector <string> code;
+			code.push_back("<h1>Заголовок</h1>");
+
+			// Ожидаемые выходные данные
+			LocationInText openingTagLocation(0, 0), closingTagLocation(13, 0);
+			PairOfTags expected(tagName, openingTagLocation, closingTagLocation);
+
+			// Вызов функции
+			PairOfTags actual(tagName);
+			actual.findPairOfTags(code);
+
+			// Проверка результата
+			ASSERT_tagsLocationsAreEqual(expected, actual);
 		}
 	};
 }
