@@ -9,9 +9,28 @@ PairOfTags::PairOfTags(string name, LocationInText openingTagLocation, LocationI
     this->closingTagLocation = closingTagLocation;
 }
 
+/*! Определяет искомый тег в строке
+ *\param [in] pairOfTags - объект пары тегов (необходимо как минимум инициализированное имя)
+ *\param [in] string - строка кода*/
 void PairOfTags::findTagsLocationsInString(const string& str, int pos)
 {
-   
+    string s = str.substr(pos); // Подстрока, в которой производится поиск
+
+    smatch m;
+
+    string tmp1;
+    tmp1.append("<");    tmp1.append(name);    tmp1.append(".*>");
+    regex regexpOfOpeningTag{ tmp1 };
+
+    if (regex_search(s, m, regexpOfOpeningTag))
+        openingTagLocation.charIndex = m.position();
+
+    string tmp2;
+    tmp2.append("<\/");    tmp2.append(name);    tmp2.append(".*>");
+    regex regexpOfClosingTag{ tmp2 };
+
+    if (regex_search(s, m, regexpOfClosingTag))
+        closingTagLocation.charIndex = m.position();
 }
 
 /*! Находит первое вхождение тега в коде
