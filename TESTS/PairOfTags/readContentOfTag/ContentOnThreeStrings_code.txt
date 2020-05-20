@@ -1,0 +1,6 @@
+
+<h2 id="section1">
+	<span style="font-weight: 400;">
+	Настройка и установка
+	</span>
+</h2>
