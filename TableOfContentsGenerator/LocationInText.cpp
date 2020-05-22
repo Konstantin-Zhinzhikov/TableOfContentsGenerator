@@ -14,6 +14,19 @@ void LocationInText::setLocation(int chIndex, int strIndex)
     stringIndex = strIndex;
 }
 
+/*! »нкремент позиции
+ *\param [in] curString - строка, на которую указывает this->stringIndex*/
+void LocationInText::incPos(const string& string)
+{
+    charIndex++;
+
+    if (charIndex >= string.length())
+    {
+        charIndex = 0;
+        stringIndex++;
+    }
+}
+
 bool LocationInText::operator> (LocationInText another)
 {
     if (this->stringIndex > another.stringIndex)

@@ -70,6 +70,60 @@ bool PairOfTags::findPairOfTags(const vector <string>& code, LocationInText star
     return foundOpening && foundClosing;
 }
 
+/*! Читает из кода содержание заголовка
+ *\param [in] code - html-код*/
 void PairOfTags::readContentOfTag(const vector <string>& code)
 {
+    // Индекс начала контента
+    LocationInText beginOfContent(code[openingTagLocation.stringIndex].find(">", openingTagLocation.charIndex), openingTagLocation.stringIndex);
+    //LocationInText beginOfContent(openingTagLocation.charIndex + name.size() + 1, openingTagLocation.stringIndex);
+    beginOfContent.incPos(code[beginOfContent.stringIndex]);
+
+    // Индекс конца контента
+    LocationInText endOfContent = closingTagLocation;
+    endOfContent.charIndex--;
+
+    // Перенос индекса на конец предыдущей строки, если закрывающий тег в начале строки
+    if (this->closingTagLocation.charIndex < 0)
+    {
+        endOfContent.stringIndex--;
+        endOfContent.charIndex = code[endOfContent.stringIndex].length() - 1;
+        //int prevStr = endOfContent.stringIndex - 1;
+        //endOfContent.setLocation(code[prevStr].length() - 1, prevStr);
+    }
+
+    // Если контент содержится на одной строке
+    if (beginOfContent.stringIndex == endOfContent.stringIndex)
+    {
+        // Присоединить к содержанию тега подстроку от начала контента до его конца
+        content.append(code[beginOfContent.stringIndex], beginOfContent.charIndex, endOfContent.charIndex - beginOfContent.charIndex + 1);
+    }
+
+    else
+    {
+        // Скопировать все от начала контента до конца строки
+        content.append(code[beginOfContent.stringIndex], beginOfContent.charIndex, code[beginOfContent.stringIndex].length());
+
+        // Для всех строк от начала+1 до конца контента
+        for (int i = beginOfContent.stringIndex + 1; i < endOfContent.stringIndex; i++)
+        {
+            //Скопировать строку целиком
+            content.append(code[i]);
+        }
+
+        // Скопировать последнюю строку от начала строки до конца контента
+        content.append(code[endOfContent.stringIndex], 0, endOfContent.charIndex + 1);
+    }
+
+    // Удалить все знаки табуляции из строки
+    int tabPos = content.find("\t");
+    while (tabPos != -1)
+    {
+        content.replace(tabPos, 1, "");
+        tabPos = content.find("\t");
+    }
+
+    // Проверка на пустой заголовок 
+    if (this->content.length() == 0)
+        throw string("Пустой заголовок");
 }
