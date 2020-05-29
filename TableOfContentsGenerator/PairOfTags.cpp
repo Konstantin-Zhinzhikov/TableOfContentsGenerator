@@ -9,6 +9,13 @@ PairOfTags::PairOfTags(string name, LocationInText openingTagLocation, LocationI
     this->closingTagLocation = closingTagLocation;
 }
 
+PairOfTags::PairOfTags(string name, int openCharIndex, int openStrIndex, int closCharIndex, int closStrIndex)
+{
+    this->name = name;
+    this->openingTagLocation = LocationInText(openCharIndex, openStrIndex);
+    this->closingTagLocation = LocationInText(closCharIndex, closStrIndex);
+}
+
 /*! Определяет искомый тег в строке
  *\param [in] pairOfTags - объект пары тегов (необходимо как минимум инициализированное имя)
  *\param [in] string - строка кода*/
