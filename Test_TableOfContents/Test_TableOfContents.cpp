@@ -186,4 +186,5 @@ namespace TestTableOfContents
 			// Проверка результата
 			ASSERT_areTextsEqual(expected, contents.codeOfTableOfContents);
 		}
+	};
 }
