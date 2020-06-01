@@ -63,9 +63,14 @@ void TableOfContents::generateTableOfContents(const vector <string>& code)
 
 }
 
+/*! —читывает в заголовки их содержание
+ *\param [in] code - html-код*/
 void TableOfContents::readContentsOfHeaders(const vector <string>& code)
 {
-
+    for (int i = 0; i < this->headers.size(); i++)
+    {
+        headers[i].readContentOfTag(code);
+    }
 }
 
 void TableOfContents::writeTableOfContentsInFile(const string& path)

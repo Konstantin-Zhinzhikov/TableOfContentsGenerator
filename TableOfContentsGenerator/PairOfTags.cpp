@@ -51,8 +51,8 @@ bool PairOfTags::findPairOfTags(const vector <string>& code, LocationInText star
 
     int charPos = startOfSearch.charIndex;
 
-    // Для каждой строки кода или пока не найдено
-    for (int i = startOfSearch.stringIndex; i < (int)code.size() || !(foundOpening && foundClosing); i++)
+    // Для каждой строки кода И пока не найдено
+    for (int i = startOfSearch.stringIndex; i < (int)code.size() && !(foundOpening && foundClosing); i++)
     {
         tmp.findTagsLocationsInString(code[i], charPos);
 
