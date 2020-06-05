@@ -10,31 +10,42 @@ TableOfContents::TableOfContents()
 /*! Находит все теги заголовков (h1-h6) в коде
  *\param [in] code - html-код
  *\return - Параметры функции в массиве */
-void TableOfContents::findAllHeaders(const vector  <string>& code)
+void TableOfContents::findAllHeaders(vector  <string> code)
 {
+    // Перевести все символы в коде в нижний регистр
+    for (int i = 0; i < code.size(); i++)
+        for (int j = 0; j < code[i].size(); j++)
+            code[i][j] = tolower(code[i][j]);
+
     // Для каждого типа заголовков (h1-h6)
     for (int i = 1; i <= 6; i++)
     {
-        PairOfTags currentHeader("h");  currentHeader.name.append(to_string(i));
+        LocationInText pos(0, 0); // Позиция поиска
 
-        LocationInText pos(0, 0);
-
-        bool found = true;
-        while (found)
+        bool allCurrentHeadersFound = false;
+        while (!allCurrentHeadersFound)
         {
-            found = currentHeader.findPairOfTags(code, pos);
+            PairOfTags currentHeader("h");  currentHeader.name.append(to_string(i));
 
-            if (found)
+            if (currentHeader.findPairOfTags(code, pos))
             {
+                // Сохранить заголовок
                 this->headers.push_back(currentHeader);
                 this->levelsOfHeaders.push_back(i);
 
-                pos = currentHeader.closingTagLocation;
+                // Начать следующий поиск после закрытого тега этого заголовка
+                //pos = currentHeader.closingTagLocation;
+                pos.charIndex = currentHeader.closingTagLocation.charIndex + 4;
+                pos.stringIndex = currentHeader.closingTagLocation.stringIndex;
                 pos.incPos(code[pos.stringIndex]);
+            }
+            else
+            {
+                allCurrentHeadersFound = true;
             }
         }
     }
-    this->sortHeaders();
+    sortHeaders();
 }
 
 void TableOfContents::sortHeaders()

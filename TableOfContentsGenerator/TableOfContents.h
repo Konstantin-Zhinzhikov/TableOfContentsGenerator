@@ -16,7 +16,7 @@ public:
     std::vector <int> levelsOfHeaders;
 
     void generateTableOfContents(const std::vector <std::string>& code);
-    void findAllHeaders(const std::vector  <std::string> &code);
+    void findAllHeaders(std::vector <std::string> code);
     void readContentsOfHeaders(const std::vector <std::string>& code);
     void writeTableOfContentsInFile(const std::string& path);
 };
