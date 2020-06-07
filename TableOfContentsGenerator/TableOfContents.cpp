@@ -12,6 +12,9 @@ TableOfContents::TableOfContents()
  *\return - Параметры функции в массиве */
 void TableOfContents::findAllHeaders(vector  <string> code)
 {
+    // Заменить все комментарии в коде символами 'c'
+    clearCodeFromComments(code);
+
     // Перевести все символы в коде в нижний регистр
     for (int i = 0; i < code.size(); i++)
         for (int j = 0; j < code[i].size(); j++)
@@ -48,9 +51,84 @@ void TableOfContents::findAllHeaders(vector  <string> code)
     sortHeaders();
 }
 
+/* Заменяет в коде все комментарии символами 'c'
+*\param [in/out] code - html-код страницы*/
 void TableOfContents::clearCodeFromComments(std::vector <std::string>& code)
 {
+    bool commentIsOpenedBefore = false;
 
+    for (int i = 0; i < code.size(); i++)
+    {
+        bool commentOpensInCurrString = commentIsOpenedBefore;
+        int openIndx = -1, closIndx = -1; // Считать, что комментарий не открывается в этой строке        
+
+        // ---- Поиск комментариев ----
+        // Если комментарий не был открыт ранее
+        if (!commentIsOpenedBefore)
+        {
+            openIndx = code[i].find("<!--"); // Искать открытие комментария в строке
+            // Если найден
+            if (openIndx != -1)
+            {
+                commentOpensInCurrString = true; //Cчитать, что он открыт в этой строке
+                closIndx = code[i].find("-->", openIndx + 3); // Искать конец комментария после открытия
+                // Если найден
+                if (closIndx != -1)
+                    commentOpensInCurrString = false; // Считать, что комментарий закрывается в этой строке
+            }
+        }
+        // Иначе если комментарий был открыт ранее
+        else if (commentIsOpenedBefore)
+        {
+            closIndx = code[i].find("-->"); // Искать конец комментария с начала строки
+            // Если найден
+            if (closIndx != -1)
+                commentOpensInCurrString = false; // Считать, что комментарий закрывается в этой строке
+        }
+
+        // ---- Удаление ----
+        // Если комментарий был открыт в этой строке
+        if (openIndx != -1 && !commentIsOpenedBefore)
+        {
+            // Если комментарий НЕ был закрыт в этой строке
+            if (closIndx == -1)
+            {
+                // Удалить все после открытия комментария
+                for (int j = openIndx; j < code[i].size(); j++)
+                    code[i].replace(j, 1, "c");
+            }
+            // Если комментарий БЫЛ закрыт в этой строке
+            else if (closIndx != -1)
+            {
+                // Удалить все после открытия комментария и до закрытия
+                for (int j = openIndx; j < closIndx + 3; j++)
+                    code[i].replace(j, 1, "c");
+                i--; // Не переходить не следующую строку, т.к. в этой строке может быть ещё один комментарий
+            }
+        }
+
+        // Если комментарий был открыт ранее
+        else if (openIndx == -1 && commentIsOpenedBefore)
+        {
+            // Если комментарий НЕ был закрыт в этой строке
+            if (closIndx == -1)
+            {
+                // Удалить строку
+                for (int j = 0; j < code[i].size(); j++)
+                    code[i].replace(j, 1, "c");
+            }
+            // Если комментарий БЫЛ закрыт в этой строке
+            else if (closIndx != -1)
+            {
+                // Удалить все до закрытия комментария
+                for (int j = 0; j < closIndx + 3; j++)
+                    code[i].replace(j, 1, "c");
+
+                i--; // Не переходить не следующую строку, т.к. в этой строке может быть ещё один комментарий
+            }
+        }
+        commentIsOpenedBefore = commentOpensInCurrString; // считать что комментарий открыт, если в этой строке он не был закрыт или был открыт 
+    }
 }
 
 void TableOfContents::sortHeaders()
