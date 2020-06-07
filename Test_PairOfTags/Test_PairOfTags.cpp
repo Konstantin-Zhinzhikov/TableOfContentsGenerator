@@ -383,5 +383,31 @@ namespace TestPairOfTags
 			// Проверка результата
 			ASSERT_tagsAreEqual(expected, actual);
 		}
+
+		TEST_METHOD(VeryDividedContent)
+		{
+			// Входные данные
+			string tagName = "h1";
+			LocationInText openTagLoc(0, 0), closTagLoc(1, 10);
+			ifstream codeIn(TESTS_PATH"readContentOfTag/VeryDividedContent_code.txt");
+			vector <string> code;
+			string s;
+			while (getline(codeIn, s))
+			{
+				code.push_back(s);
+			}
+
+			// Ожидаемые выходные данные
+			ifstream expectedIn(TESTS_PATH"readContentOfTag/VeryDividedContent_expected.txt");
+			PairOfTags expected(tagName, openTagLoc, closTagLoc);
+			getline(expectedIn, expected.content);
+
+			// Вызов функции
+			PairOfTags actual(tagName, openTagLoc, closTagLoc);
+			actual.readContentOfTag(code);
+
+			// Проверка результата
+			ASSERT_tagsAreEqual(expected, actual);
+		}
 	};
 }

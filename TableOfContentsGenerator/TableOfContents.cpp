@@ -48,6 +48,11 @@ void TableOfContents::findAllHeaders(vector  <string> code)
     sortHeaders();
 }
 
+void TableOfContents::clearCodeFromComments(std::vector <std::string>& code)
+{
+
+}
+
 void TableOfContents::sortHeaders()
 {
     PairOfTags tmp_header; int tmp_headerLvl;

@@ -186,5 +186,78 @@ namespace TestTableOfContents
 			// Проверка результата
 			ASSERT_areTextsEqual(expected, contents.codeOfTableOfContents);
 		}
+
+		TEST_METHOD(Comments)
+		{
+			string s; // Переменная для ввода данных
+
+			// Входные данные
+			vector <string> code;
+			ifstream codeIn(TESTS_PATH "Comments_code.html");
+			while (getline(codeIn, s))
+				code.push_back(s);
+
+			// Ожидаемые выходные данные
+			vector <string> expected;
+			ifstream expectedIn(TESTS_PATH "Comments_expected.html");
+			while (getline(expectedIn, s))
+				expected.push_back(s);
+
+			// Вызов функции
+			TableOfContents contents;
+			contents.generateTableOfContents(code);
+
+			// Проверка результата
+			ASSERT_areTextsEqual(expected, contents.codeOfTableOfContents);
+		}
+	};
+
+	TEST_CLASS(Test_clearCodeFromComments)
+	{
+	public:
+		TEST_METHOD(AllIsComments)
+		{
+			string s; // Переменная для ввода данных
+
+			// Входные данные
+			vector <string> code;
+			ifstream codeIn(TESTS_PATH "clearCodeFromComments/AllIsComments_code.html");
+			while (getline(codeIn, s))
+				code.push_back(s);
+
+			// Ожидаемые выходные данные
+			vector <string> expected;
+			ifstream expectedIn(TESTS_PATH "clearCodeFromComments/AllIsComments_expected.html");
+			while (getline(expectedIn, s))
+				expected.push_back(s);
+
+			// Вызов функции
+			TableOfContents::clearCodeFromComments(code);
+
+			// Проверка результата
+			ASSERT_areTextsEqual(expected, code);
+		}
+		TEST_METHOD(TagBetweenComments)
+		{
+			string s; // Переменная для ввода данных
+
+			// Входные данные
+			vector <string> code;
+			ifstream codeIn(TESTS_PATH "clearCodeFromComments/TagBetweenComments_code.html");
+			while (getline(codeIn, s))
+				code.push_back(s);
+
+			// Ожидаемые выходные данные
+			vector <string> expected;
+			ifstream expectedIn(TESTS_PATH "clearCodeFromComments/TagBetweenComments_expected.html");
+			while (getline(expectedIn, s))
+				expected.push_back(s);
+
+			// Вызов функции
+			TableOfContents::clearCodeFromComments(code);
+
+			// Проверка результата
+			ASSERT_areTextsEqual(expected, code);
+		}
 	};
 }
