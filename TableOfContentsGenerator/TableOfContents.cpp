@@ -247,7 +247,11 @@ void TableOfContents::readContentsOfHeaders(const vector <string>& code)
     }
 }
 
+/* Запись результата в файл
+*\param [in] path - путь к новому файлу*/
 void TableOfContents::writeTableOfContentsInFile(const string& path)
 {
-
+    ofstream out(path);
+    for (int i = 0; i < codeOfTableOfContents.size(); i++)
+        out << this->codeOfTableOfContents[i] << "\n";
 }

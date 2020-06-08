@@ -1,20 +1,71 @@
-﻿// TableOfContentsGenerator.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
+﻿#include <iostream>
+#include <ctime>
+#include "TableOfContents.h"
 
-#include <iostream>
+#pragma warning(disable : 4996)
+
+using namespace std;
+
+void readTextFromFile(vector <string>& text, string path);
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    setlocale(LC_ALL, "Russian");
+
+    try
+    {
+        string path;
+        cout << "Введите путь к файлу:\n";
+        cin >> path;
+
+        // Проверить расширение файла
+        int dot = path.find_last_of('.');
+        if (path.find(".html", dot - 1) == -1)
+            throw(string("Файл в неверном формате"));
+
+        vector <string> code; // Код html-страницы
+
+        // Считать входные данные
+        readTextFromFile(code, path);
+
+        // Сгенерировать оглавление
+        cout << "Начата генерация оглавления\n";
+        TableOfContents tableOfContents;
+        tableOfContents.generateTableOfContents(code);
+
+        cout << "Оглавление сгенерировано.\n";
+        // Записать текущее дату и время в строку
+        time_t now = time(0);
+        tm* currentTm = localtime(&now);
+        char currentDateAndTime[20];
+        strftime(currentDateAndTime, 20, "%d.%m.%y_%H.%M", currentTm);
+
+        // Записать результат
+        string resultPath = "..\\Results\\";
+        resultPath.append(string(currentDateAndTime));
+        resultPath.append(".html");
+
+        tableOfContents.writeTableOfContentsInFile(resultPath);
+
+        system("pause");
+    }
+
+    catch (const string message)
+    {
+        cerr << "\nОШИБКА: " << message << endl;
+        system("pause");
+    }
 }
 
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
 
-// Советы по началу работы 
-//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
-//   2. В окне Team Explorer можно подключиться к системе управления версиями.
-//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
-//   4. В окне "Список ошибок" можно просматривать ошибки.
-//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
-//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
+void readTextFromFile(vector<string>& text, string path)
+{
+    ifstream source(path);
+
+    if (!source.is_open())
+        throw string("Не найден файл");
+
+    string s;
+    while (getline(source, s))
+        text.push_back(s);
+}
