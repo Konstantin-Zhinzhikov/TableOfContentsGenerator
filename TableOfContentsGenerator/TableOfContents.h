@@ -8,7 +8,8 @@ private:
     std::vector <int> levelsOfHeaders;
 
     void sortHeaders();
-    std::string createStringWithNestingLvl(int nestingLevel);
+    void changeNestingLevel(int lvl, int& currentNestingLevel);
+    std::string createStringWithTabs(int nestingLevel);
 
 public:
     TableOfContents();

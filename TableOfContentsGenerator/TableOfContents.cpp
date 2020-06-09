@@ -158,81 +158,68 @@ void TableOfContents::sortHeaders()
 void TableOfContents::generateTableOfContents(const vector <string>& code)
 {
     findAllHeaders(code);
-    readContentsOfHeaders(code);
-
-     // «аписать оглавление в формате html-кода
-     // ≈сли тегов > 0
+    
     if (headers.size() > 0)
     {
-        // ”величить уровень вложенности до значени€, равного уровню первого тега
+        readContentsOfHeaders(code);
         int currentNestingLvl = 0;
-        while (currentNestingLvl < levelsOfHeaders[0])
-        {
-            string s = createStringWithNestingLvl(currentNestingLvl);
-            s.append("<ul>");
-            codeOfTableOfContents.push_back(s);
-            currentNestingLvl++;
-        }
+
+        // ”величить уровень вложенности до значени€, равного уровню первого тега
+        changeNestingLevel(levelsOfHeaders[0], currentNestingLvl);
 
         // ƒл€ всех заголовков
-        for (int i = 0; i < headers.size() /*|| currentNesting != 0*/; i++)
+        for (int i = 0; i < headers.size(); i++)
         {
-            // —оздать строку, присоединить к ней знаки табул€ции
-            string s = createStringWithNestingLvl(currentNestingLvl);
-
-            // ѕрисоединить к ней текст заголовка
+            string s = createStringWithTabs(currentNestingLvl);
             s.append("<li>");
             s.append(headers[i].content);
             s.append("</li>");
-
-            // «акинуть еЄ в вектор
             this->codeOfTableOfContents.push_back(s);
 
             // ≈сли этот заголовок не был последним
             if (i != headers.size() - 1)
             {
-                // ≈сли уровень следующего заголовка больше уровн€ текущего
-                if (levelsOfHeaders[i + 1] > levelsOfHeaders[i])
-                {
-                    // ”величить вложенность таблицы
-                    for (int j = levelsOfHeaders[i + 1] - levelsOfHeaders[i]; j > 0; j--)
-                    {
-                        string s = createStringWithNestingLvl(currentNestingLvl);
-                        s.append("<ul>");
-                        codeOfTableOfContents.push_back(s);
-                        currentNestingLvl++;
-                    }
-                }
-
-                // ≈сли следующий заголовок меньше текущего
-                else  if (levelsOfHeaders[i + 1] < levelsOfHeaders[i])
-                {
-                    // ”меньшить вложенность таблицы
-                    for (int j = levelsOfHeaders[i] - levelsOfHeaders[i + 1]; j > 0; j--)
-                    {
-                        currentNestingLvl--;
-                        string s = createStringWithNestingLvl(currentNestingLvl);
-                        s.append("</ul>");
-                        codeOfTableOfContents.push_back(s);
-                    }
-                }
+                // »зменить уровень вложенности до уровн€ следующего тега
+                changeNestingLevel(levelsOfHeaders[i + 1], currentNestingLvl);
             }
         }
 
-        do
-        {
-            currentNestingLvl--;
-            string s = createStringWithNestingLvl(currentNestingLvl);
-            s.append("</ul>");
-            codeOfTableOfContents.push_back(s);
-        } while (currentNestingLvl > 0);
+        // ”меньшить уровень вложенности до нул€
+        changeNestingLevel(0, currentNestingLvl);
     }
 }
 
-string TableOfContents::createStringWithNestingLvl(int nestingLevel)
+/*! »зменение уровн€ вложенности
+ *\param [in] requiedLvl - уровень, до которого изменитс€ текуща€ вложенность
+ *\param [in] currentLvl - текущий уровень вложенности  */
+void TableOfContents::changeNestingLevel(int requiredLvl, int& currentLvl)
+{
+    // ”величить уровень вложенности
+    while (currentLvl < requiredLvl)
+    {
+        string s = createStringWithTabs(currentLvl);
+        s.append("<ul>");
+        codeOfTableOfContents.push_back(s);
+        currentLvl++;
+    }
+
+    // ”меньшить уровень вложенности
+    while (currentLvl > requiredLvl)
+    {
+        currentLvl--;
+        string s = createStringWithTabs(currentLvl);
+        s.append("</ul>");
+        codeOfTableOfContents.push_back(s);
+    }
+}
+
+/*! —оздает строку с табул€ци€ми
+ *\param [in] numberOfTabs - количество знаков табул€ций
+ return - строка со знаками табул€ций*/
+string TableOfContents::createStringWithTabs(int numberOfTabs)
 {
     string s;
-    for (int i = 0; i < nestingLevel; i++)
+    for (int i = 0; i < numberOfTabs; i++)
         s.append("\t");
     return s;
 }
