@@ -8,8 +8,7 @@ TableOfContents::TableOfContents()
 }
 
 /*! Находит все теги заголовков (h1-h6) в коде
- *\param [in] code - html-код
- *\return - Параметры функции в массиве */
+ *\param [in] code - html-код*/
 void TableOfContents::findAllHeaders(vector  <string> code)
 {
     // Заменить все комментарии в коде символами 'c'
@@ -152,9 +151,8 @@ void TableOfContents::sortHeaders()
     }
 }
 
-/*! Генерирует оглавление из текста и сохраняет его в переменной объекта
- *\param [in] headers - отсортированный спискок заголовков
- *\return - оглавление */
+/*! Генерирует оглавление html-страницы
+ *\param [in] code - код html-страницы*/
 void TableOfContents::generateTableOfContents(const vector <string>& code)
 {
     findAllHeaders(code);

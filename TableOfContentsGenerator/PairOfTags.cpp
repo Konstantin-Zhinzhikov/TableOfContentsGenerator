@@ -42,38 +42,51 @@ void PairOfTags::findTagsLocationsInString(const string& str, int pos)
 
 /*! Ќаходит первое вхождение тега в коде
  *\param [in] code - html-код*/
-bool PairOfTags::findPairOfTags(const vector <string>& code, LocationInText startOfSearch)
+bool PairOfTags::findPairOfTags(const vector <string>& code, LocationInText &pos)
 {
-    // bool found = false;
     bool foundOpening = false, foundClosing = false;
 
-    PairOfTags tmp(this->name);
-
-    int charPos = startOfSearch.charIndex;
-
-    // ƒл€ каждой строки кода » пока не найдено
-    for (int i = startOfSearch.stringIndex; i < (int)code.size() && !(foundOpening && foundClosing); i++)
+    // ѕока позици€ поиска не указывает на конец » пока не найдены открытый и закрытый теги
+    while (pos.stringIndex < (int)code.size() && !(foundOpening && foundClosing))
     {
-        tmp.findTagsLocationsInString(code[i], charPos);
+        PairOfTags tmp(this->name);
 
+        // »скать тег в строке
+        tmp.findTagsLocationsInString(code[pos.stringIndex], pos.charIndex);
+        tmp.openingTagLocation.stringIndex = pos.stringIndex;
+        tmp.closingTagLocation.stringIndex = pos.stringIndex;
+
+        // ≈сли тег уже открывалс€, но до его закрыти€ найдено еще одно открытие
+        if (foundOpening && tmp.openingTagLocation.charIndex != -1 &&
+            (tmp.closingTagLocation > tmp.openingTagLocation || tmp.closingTagLocation.charIndex == -1))
+            throw string("Ќесоответствие количества открывающих и закрывающих тегов");
+
+        // ≈сли найден открытый и открытый тег еще не был найден
         if (tmp.openingTagLocation.charIndex != -1 && !foundOpening)
         {
-            this->openingTagLocation.charIndex = tmp.openingTagLocation.charIndex;
-            this->openingTagLocation.stringIndex = i;
+            this->openingTagLocation = tmp.openingTagLocation;
             foundOpening = true;
         }
 
+        // ≈сли найден закрытый
         if (tmp.closingTagLocation.charIndex != -1 && !foundClosing)
         {
-            this->closingTagLocation.charIndex = tmp.closingTagLocation.charIndex;
-            this->closingTagLocation.stringIndex = i;
+            // ≈сли открытый еще не был найден
+            if (!foundOpening)
+                throw string("Ќесоответствие количества открывающих и закрывающих тегов");
+
+            this->closingTagLocation = tmp.closingTagLocation;
             foundClosing = true;
         }
 
-        charPos = 0;
-        //found = foundOpening && foundClosing;
-
+        // ѕерейти на след. строку
+        pos.charIndex = 0;
+        pos.stringIndex++;
     }
+
+    if (foundOpening != foundClosing)
+        throw string("Ќесоответствие количества открывающих и закрывающих тегов");
+
     return foundOpening && foundClosing;
 }
 
