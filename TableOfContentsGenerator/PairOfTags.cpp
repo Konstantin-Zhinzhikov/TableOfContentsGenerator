@@ -16,9 +16,9 @@ PairOfTags::PairOfTags(string name, int openCharIndex, int openStrIndex, int clo
     this->closingTagLocation = LocationInText(closCharIndex, closStrIndex);
 }
 
-/*! ќпредел€ет искомый тег в строке
- *\param [in] pairOfTags - объект пары тегов (необходимо как минимум инициализированное им€)
- *\param [in] string - строка кода*/
+/*! Ќаходит положени€ открытого и/или закрытого тега в строке
+*\param [in] str - строка, в которой будет производитьс€ поиск
+*\param [in] pos - позици€ начала поиска*/
 void PairOfTags::findTagsLocationsInString(const string& str, int pos)
 {
     string s = str.substr(pos); // ѕодстрока, в которой производитс€ поиск
@@ -49,7 +49,7 @@ bool PairOfTags::findPairOfTags(const vector <string>& code, LocationInText &pos
     // ѕока позици€ поиска не указывает на конец » пока не найдены открытый и закрытый теги
     while (pos.stringIndex < (int)code.size() && !(foundOpening && foundClosing))
     {
-        PairOfTags tmp(this->name);
+        PairOfTags tmp(name);
 
         // »скать тег в строке
         tmp.findTagsLocationsInString(code[pos.stringIndex], pos.charIndex);

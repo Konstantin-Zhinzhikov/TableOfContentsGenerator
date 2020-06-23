@@ -1,6 +1,8 @@
+/// \file Заголовочный файл с описанием класса местоположения в тексте
 #pragma once
 #include <string>
 
+/// Класс местоположения символа в тексте
 class LocationInText
 {
 public:

@@ -1,11 +1,17 @@
+/* \file Заголовочный файл с описанием класса оглавления*/
+
 #pragma once
 #include "PairOfTags.h"
 #include <fstream>
 
+
+/// Класс оглавления
 class TableOfContents
 {
 private:
-    std::vector <int> levelsOfHeaders;
+    /// "Уровни" соответствующих заголовков. 
+    /*! Под уровнем понимается номер h-заголовка, 1 для h1, 2 для h2 и т.д.*/
+    std::vector <int> levelsOfHeaders;  
 
     void sortHeaders();
     void changeNestingLevel(int lvl, int& currentNestingLevel);
@@ -14,7 +20,10 @@ private:
 public:
     TableOfContents();
 
+    /// html-код с оглавлением в виде тегов <ul>,<li>
     std::vector <std::string> codeOfTableOfContents;
+
+    /// Массив заголовков
     std::vector <PairOfTags> headers;
 
     void generateTableOfContents(const std::vector <std::string>& code);

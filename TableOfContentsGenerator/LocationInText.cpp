@@ -27,6 +27,9 @@ void LocationInText::incPos(const string& string)
     }
 }
 
+/* ќпераци€ сравнени€ местоположений в тексте
+*\param [in/out] another Ц второй объект местоположени€
+*\return Ц true, если первое местоположение находитс€ в тексе позже, чем второе*/
 bool LocationInText::operator> (LocationInText another)
 {
     if (this->stringIndex > another.stringIndex)
@@ -37,6 +40,9 @@ bool LocationInText::operator> (LocationInText another)
         return false;
 }
 
+/* ќпераци€ сравнени€ местоположений в тексте
+*\param [in/out] another Ц второй объект местоположени€
+*\return Ц true, если первое местоположение находитс€ в тексе раньше, чем второе*/
 bool LocationInText::operator< (LocationInText another)
 {
     if (this->stringIndex < another.stringIndex)

@@ -130,6 +130,7 @@ void TableOfContents::clearCodeFromComments(std::vector <std::string>& code)
     }
 }
 
+/*! Сортировка заголовков по их местоположению*/
 void TableOfContents::sortHeaders()
 {
     PairOfTags tmp_header; int tmp_headerLvl;
@@ -189,7 +190,7 @@ void TableOfContents::generateTableOfContents(const vector <string>& code)
 
 /*! Изменение уровня вложенности
  *\param [in] requiedLvl - уровень, до которого изменится текущая вложенность
- *\param [in] currentLvl - текущий уровень вложенности  */
+ *\param [in/out] currentLvl - текущий уровень вложенности*/
 void TableOfContents::changeNestingLevel(int requiredLvl, int& currentLvl)
 {
     // Увеличить уровень вложенности
