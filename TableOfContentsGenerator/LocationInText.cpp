@@ -8,12 +8,6 @@ LocationInText::LocationInText(int chIndex, int strIndex)
     stringIndex = strIndex;
 }
 
-void LocationInText::setLocation(int chIndex, int strIndex)
-{
-    charIndex = chIndex;
-    stringIndex = strIndex;
-}
-
 /*! »нкремент позиции
  *\param [in] curString - строка, на которую указывает this->stringIndex*/
 void LocationInText::incPos(const string& string)
