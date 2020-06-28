@@ -8,15 +8,21 @@ using namespace std;
 
 void readTextFromFile(vector <string>& text, string path);
 
-int main()
+int main(int argc, char *argv[])
 {
     setlocale(LC_ALL, "Russian");
 
+    string path; // Путь к файлу с кодом
+
     try
     {
-        string path;
-        cout << "Введите путь к файлу:\n";
-        cin >> path;
+        if (argc == 2)
+            path = argv[1];
+        else
+        {
+            cout << "Введите путь к файлу:\n";
+            cin >> path;
+        }
 
         // Проверить расширение файла
         int dot = path.find_last_of('.');
@@ -46,14 +52,11 @@ int main()
         resultPath.append(".html");
 
         tableOfContents.writeTableOfContentsInFile(resultPath);
-
-        system("pause");
     }
 
     catch (const string message)
     {
         cerr << "\nОШИБКА: " << message << endl;
-        system("pause");
     }
 }
 
