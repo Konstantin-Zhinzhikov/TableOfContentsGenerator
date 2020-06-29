@@ -35,11 +35,10 @@ int main(int argc, char *argv[])
         readTextFromFile(code, path);
 
         // Сгенерировать оглавление
-        cout << "Начата генерация оглавления\n";
         TableOfContents tableOfContents;
         tableOfContents.generateTableOfContents(code);
 
-        cout << "Оглавление сгенерировано.\n";
+        cout << "Оглавление сгенерировано. Результат находится в папке Results.\n";
         // Записать текущее дату и время в строку
         time_t now = time(0);
         tm* currentTm = localtime(&now);
@@ -56,7 +55,7 @@ int main(int argc, char *argv[])
 
     catch (const string message)
     {
-        cerr << "\nОШИБКА: " << message << endl;
+        cout << "\nОШИБКА: " << message << endl;
     }
 }
 

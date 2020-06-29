@@ -19,12 +19,9 @@ private:
 
 public:
     TableOfContents();
-
-    /// html-код с оглавлением в виде тегов <ul>,<li>
-    std::vector <std::string> codeOfTableOfContents;
-
-    /// ћассив заголовков
-    std::vector <PairOfTags> headers;
+        
+    std::vector <std::string> codeOfTableOfContents; ///< html-код с оглавлением в виде тегов <ul>,<li>   
+    std::vector <PairOfTags> headers;                ///< ћассив заголовков
 
     void generateTableOfContents(const std::vector <std::string>& code);
     void findAllHeaders(std::vector <std::string> code);

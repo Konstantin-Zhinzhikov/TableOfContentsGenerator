@@ -41,8 +41,10 @@ void PairOfTags::findTagsLocationsInString(const string& str, int pos)
 }
 
 /*! Ќаходит первое вхождение тега в коде
- *\param [in] code - html-код*/
-bool PairOfTags::findPairOfTags(const vector <string>& code, LocationInText &pos)
+ *\param [in] code - html-код
+ *\param [in] pos - позици€ начала поиска
+ *\return - 0, если тег не найден*/
+bool PairOfTags::findPairOfTags(const vector <string>& code, LocationInText pos)
 {
     bool foundOpening = false, foundClosing = false;
 

@@ -214,7 +214,7 @@ void TableOfContents::changeNestingLevel(int requiredLvl, int& currentLvl)
 
 /*! Создает строку с табуляциями
  *\param [in] numberOfTabs - количество знаков табуляций
- return - строка со знаками табуляций*/
+ *\return - строка со знаками табуляций*/
 string TableOfContents::createStringWithTabs(int numberOfTabs)
 {
     string s;
